@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://vxqymbauulub"]
+
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/HitComponent.gd" id="1_c3dhc"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/Boss.gd" id="1_ia3rt"]
+[ext_resource type="Texture2D" uid="uid://cpg7ttoi3wjj7" path="res://Assets/Sprites/Boss/enemy_boss.png" id="2_boovp"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StatisticsComponent.gd" id="3_afrgb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oh62u"]
+size = Vector2(65.5, 79)
+
+[node name="Boss" type="Node2D"]
+script = ExtResource("1_ia3rt")
+
+[node name="HitComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "sprite")]
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("1_c3dhc")
+health_component = NodePath("../StatisticsComponent")
+sprite = NodePath("../Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitComponent"]
+position = Vector2(-0.75, 2)
+shape = SubResource("RectangleShape2D_oh62u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_boovp")
+
+[node name="StatisticsComponent" type="Node2D" parent="."]
+script = ExtResource("3_afrgb")
+max_health = 2000
+health = 2000
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Rotater" type="Node2D" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

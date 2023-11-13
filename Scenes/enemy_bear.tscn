@@ -1,0 +1,273 @@
+[gd_scene load_steps=23 format=3 uid="uid://ccxsy3fy8ejxp"]
+
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/enemy.gd" id="1_7lllb"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StatisticsComponent.gd" id="2_24ojf"]
+[ext_resource type="Texture2D" uid="uid://c2ovn6w27k8p2" path="res://Assets/Sprites/Enemies/enemy_bear.png" id="3_aye34"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AnimationController.gd" id="4_8edp2"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/HitComponent.gd" id="5_c5nqm"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AttackComponent.gd" id="6_b4fxs"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/DetectAttack.gd" id="7_t54k5"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StateController.gd" id="8_6oiv0"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/DetectPlayer.gd" id="9_560ky"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/CloseRangedAttack.gd" id="10_1eiq6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oavwl"]
+size = Vector2(20, 8.5)
+
+[sub_resource type="Animation" id="Animation_5smlr"]
+resource_name = "Attack"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 16]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../AttackComponent/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2(-6, 6), Vector2(-11, 5), Vector2(-9, 6)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../AttackComponent/CollisionShape2D:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.9, 0.9001),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [9.0, 12.0416, 8.0, 8.0]
+}
+
+[sub_resource type="Animation" id="Animation_use00"]
+resource_name = "Idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21]
+}
+
+[sub_resource type="Animation" id="Animation_f2v6m"]
+resource_name = "Moving"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_ik5tt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../AttackComponent/CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-8, 6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../AttackComponent/CollisionShape2D:shape:radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [9.0]
+}
+
+[sub_resource type="Animation" id="Animation_q7q88"]
+resource_name = "WakeUp"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6l2wc"]
+_data = {
+"Attack": SubResource("Animation_5smlr"),
+"Idle": SubResource("Animation_use00"),
+"Moving": SubResource("Animation_f2v6m"),
+"RESET": SubResource("Animation_ik5tt"),
+"WakeUp": SubResource("Animation_q7q88")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mefvi"]
+size = Vector2(27.5, 13)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jun77"]
+radius = 9.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uahhi"]
+size = Vector2(26, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0gbek"]
+radius = 20.025
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fx7mp"]
+radius = 128.098
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("statistics", "detect_area", "detect_attack", "attack", "close_range_attack", "navAgent", "state", "timer", "animation_controller", "sprite", "detect_area_collision")]
+collision_layer = 64
+collision_mask = 97
+script = ExtResource("1_7lllb")
+statistics = NodePath("StatisticsComponent")
+detect_area = NodePath("DetectArea")
+detect_attack = NodePath("DetectAttack")
+attack = NodePath("AttackComponent")
+close_range_attack = NodePath("CloseRangedAttack")
+navAgent = NodePath("NavigationAgent2D")
+state = NodePath("StateController")
+timer = NodePath("Timer")
+animation_controller = NodePath("AnimationController")
+sprite = NodePath("AnimationController")
+detect_area_collision = NodePath("DetectArea/CollisionShape2D")
+
+[node name="StatisticsComponent" type="Node2D" parent="."]
+visible = false
+script = ExtResource("2_24ojf")
+max_health = 500
+health = 500
+speed = 150
+atk_damage = 20
+atk_speed = 2.0
+enemy_type = 2
+player_type = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(2, 11.25)
+shape = SubResource("RectangleShape2D_oavwl")
+
+[node name="AnimationController" type="Sprite2D" parent="." node_paths=PackedStringArray("detectArea", "animator", "state")]
+texture_filter = 1
+texture = ExtResource("3_aye34")
+hframes = 6
+vframes = 4
+frame = 12
+script = ExtResource("4_8edp2")
+detectArea = NodePath("../DetectArea")
+animator = NodePath("AnimationPlayer")
+state = NodePath("../StateController")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+libraries = {
+"": SubResource("AnimationLibrary_6l2wc")
+}
+
+[node name="HitComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "sprite")]
+visible = false
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("5_c5nqm")
+health_component = NodePath("../StatisticsComponent")
+sprite = NodePath("../AnimationController")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitComponent"]
+visible = false
+position = Vector2(0.75, 5.5)
+shape = SubResource("RectangleShape2D_mefvi")
+
+[node name="AttackComponent" type="Area2D" parent="." node_paths=PackedStringArray("statistics")]
+visible = false
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("6_b4fxs")
+statistics = NodePath("../StatisticsComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent"]
+position = Vector2(-8, 6)
+shape = SubResource("CircleShape2D_jun77")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AttackComponent"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_uahhi")
+
+[node name="DetectAttack" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("7_t54k5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectAttack"]
+position = Vector2(-1, 6)
+shape = SubResource("CircleShape2D_0gbek")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="StateController" type="Node2D" parent="."]
+script = ExtResource("8_6oiv0")
+
+[node name="DetectArea" type="Area2D" parent="."]
+position = Vector2(0, 6)
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("9_560ky")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+shape = SubResource("CircleShape2D_fx7mp")
+
+[node name="CloseRangedAttack" type="Node2D" parent="." node_paths=PackedStringArray("statisticsComponent", "detect_attack", "state")]
+position = Vector2(0, 5)
+script = ExtResource("10_1eiq6")
+statisticsComponent = NodePath("../StatisticsComponent")
+detect_attack = NodePath("../DetectAttack")
+state = NodePath("../StateController")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="area_entered" from="HitComponent" to="HitComponent" method="_on_area_entered"]
+[connection signal="area_entered" from="AttackComponent" to="AttackComponent" method="_on_area_entered"]
+[connection signal="body_entered" from="DetectAttack" to="DetectAttack" method="_on_body_entered"]
+[connection signal="body_exited" from="DetectAttack" to="DetectAttack" method="_on_body_exited"]
+[connection signal="body_entered" from="DetectArea" to="DetectArea" method="_on_body_entered"]
+[connection signal="body_exited" from="DetectArea" to="DetectArea" method="_on_body_exited"]

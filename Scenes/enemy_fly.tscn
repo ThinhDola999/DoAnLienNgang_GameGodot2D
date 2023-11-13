@@ -1,0 +1,177 @@
+[gd_scene load_steps=20 format=3 uid="uid://gypl85mgqgx2"]
+
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/enemy.gd" id="1_86cs5"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/HitComponent.gd" id="1_a7cm7"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StatisticsComponent.gd" id="3_a2468"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/DetectPlayer.gd" id="3_sx6ko"]
+[ext_resource type="Texture2D" uid="uid://bv31afx1roolb" path="res://Assets/Sprites/Enemies/enemy_fly.png" id="4_uvkoi"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AnimationController.gd" id="5_gugr5"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AttackComponent.gd" id="5_rv7vs"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/EnemyShoot.gd" id="8_4mq6d"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/DetectAttack.gd" id="9_tavhf"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/CloseRangedAttack.gd" id="10_ydsbu"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StateController.gd" id="11_egxuv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_axxjj"]
+radius = 136.015
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4me08"]
+radius = 82.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wbwdj"]
+radius = 4.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s7sre"]
+size = Vector2(13, 16)
+
+[sub_resource type="Animation" id="Animation_34g7w"]
+resource_name = "Attack"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_eba7p"]
+resource_name = "Idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_2a3ap"]
+resource_name = "Moving"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f8mqd"]
+_data = {
+"Attack": SubResource("Animation_34g7w"),
+"Idle": SubResource("Animation_eba7p"),
+"Moving": SubResource("Animation_2a3ap")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("statistics", "detect_area", "detect_attack", "attack", "enemyShoot", "close_range_attack", "state", "timer")]
+script = ExtResource("1_86cs5")
+statistics = NodePath("StatisticsComponent")
+detect_area = NodePath("DetectArea")
+detect_attack = NodePath("DetectAttack")
+attack = NodePath("AttackComponent")
+enemyShoot = NodePath("Shoot")
+close_range_attack = NodePath("CloseRangedAttack")
+state = NodePath("StateController")
+timer = NodePath("CloseRangedAttack/Timer")
+
+[node name="StatisticsComponent" type="Node2D" parent="."]
+script = ExtResource("3_a2468")
+max_health = 150
+atk_damage = 20
+enemy_type = 1
+
+[node name="DetectArea" type="Area2D" parent="."]
+collision_layer = 64
+script = ExtResource("3_sx6ko")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_axxjj")
+
+[node name="DetectAttack" type="Area2D" parent="."]
+collision_layer = 64
+script = ExtResource("9_tavhf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectAttack"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_4me08")
+
+[node name="HitComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "sprite")]
+visible = false
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("1_a7cm7")
+health_component = NodePath("../StatisticsComponent")
+sprite = NodePath("../AnimationController")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitComponent"]
+position = Vector2(-1, 5)
+shape = SubResource("CapsuleShape2D_wbwdj")
+
+[node name="AttackComponent" type="Area2D" parent="." node_paths=PackedStringArray("statistics")]
+collision_layer = 64
+script = ExtResource("5_rv7vs")
+statistics = NodePath("../StatisticsComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent"]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_s7sre")
+
+[node name="AnimationController" type="Sprite2D" parent="." node_paths=PackedStringArray("detectArea", "animator", "state")]
+texture_filter = 1
+position = Vector2(0, 5)
+texture = ExtResource("4_uvkoi")
+hframes = 6
+frame = 4
+script = ExtResource("5_gugr5")
+detectArea = NodePath("../DetectArea")
+animator = NodePath("AnimationPlayer")
+state = NodePath("../StateController")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+libraries = {
+"": SubResource("AnimationLibrary_f8mqd")
+}
+
+[node name="Shoot" type="Node2D" parent="." node_paths=PackedStringArray("detect_area", "detect_attack")]
+position = Vector2(0, 6)
+script = ExtResource("8_4mq6d")
+detect_area = NodePath("../DetectArea")
+detect_attack = NodePath("../DetectAttack")
+
+[node name="CloseRangedAttack" type="Node2D" parent="." node_paths=PackedStringArray("statisticsComponent", "detect_attack", "state")]
+script = ExtResource("10_ydsbu")
+statisticsComponent = NodePath("../StatisticsComponent")
+detect_attack = NodePath("../DetectAttack")
+state = NodePath("../StateController")
+
+[node name="Timer" type="Timer" parent="CloseRangedAttack"]
+one_shot = true
+
+[node name="StateController" type="Node2D" parent="."]
+script = ExtResource("11_egxuv")
+
+[connection signal="body_entered" from="DetectArea" to="DetectArea" method="_on_body_entered"]
+[connection signal="body_exited" from="DetectArea" to="DetectArea" method="_on_body_exited"]
+[connection signal="body_entered" from="DetectAttack" to="DetectAttack" method="_on_body_entered"]
+[connection signal="body_exited" from="DetectAttack" to="DetectAttack" method="_on_body_exited"]
+[connection signal="area_entered" from="AttackComponent" to="AttackComponent" method="_on_area_entered"]

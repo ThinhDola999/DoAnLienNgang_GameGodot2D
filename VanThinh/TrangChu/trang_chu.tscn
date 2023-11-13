@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://dyndaxvdi63oy"]
+
+[ext_resource type="Script" path="res://VanThinh/TrangChu/trang_chu.gd" id="1_irksb"]
+[ext_resource type="Texture2D" uid="uid://dlogj11uquuk3" path="res://VanThinh/TrangChu/img/button_gamemoi.jpg" id="2_htc7r"]
+[ext_resource type="PackedScene" uid="uid://cr3v2enl813eg" path="res://VanThinh/Home_NhanVat/trang_home.tscn" id="2_hudi7"]
+[ext_resource type="Texture2D" uid="uid://0eubpcrgn70w" path="res://VanThinh/TrangChu/img/setting.png" id="5_nfkpa"]
+[ext_resource type="PackedScene" uid="uid://ds0cmc38yk2uq" path="res://VanThinh/MenuCaiDat/menu_setting.tscn" id="7_3lpse"]
+[ext_resource type="AudioStream" uid="uid://dr0mf0646dlbp" path="res://VanThinh/MenuCaiDat/AmThanh/button-124476.mp3" id="9_spiv8"]
+
+[node name="TrangChu" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_irksb")
+HomeScene = ExtResource("2_hudi7")
+
+[node name="button_caidat" type="Button" parent="."]
+offset_left = 45.0
+offset_top = 529.0
+offset_right = 121.0
+offset_bottom = 599.0
+
+[node name="Setting" type="Sprite2D" parent="button_caidat"]
+texture_filter = 1
+position = Vector2(38, 37.0001)
+scale = Vector2(0.0516917, 0.0592396)
+texture = ExtResource("5_nfkpa")
+
+[node name="button_playGame" type="Button" parent="."]
+offset_left = 448.0
+offset_top = 526.0
+offset_right = 723.0
+offset_bottom = 601.0
+
+[node name="ButtonGamemoi" type="Sprite2D" parent="button_playGame"]
+texture_filter = 1
+position = Vector2(138.071, 38.1936)
+scale = Vector2(0.428793, 0.39785)
+texture = ExtResource("2_htc7r")
+
+[node name="sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_spiv8")
+pitch_scale = 1.53
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.514
+one_shot = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 467.0
+offset_top = 303.0
+offset_right = 687.0
+offset_bottom = 372.0
+text = "Đây là trang chủ"
+fit_content = true
+
+[node name="menuSetting" parent="." instance=ExtResource("7_3lpse")]
+
+[connection signal="pressed" from="button_caidat" to="." method="_on_button_caidat_pressed"]
+[connection signal="button_up" from="button_playGame" to="." method="_on_button_play_game_button_up"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=3 uid="uid://d05vco8i8ru5d"]
+
+[ext_resource type="Texture2D" uid="uid://bs1jpbaifjkyd" path="res://VanThinh/MenuHp_Mp_NhanVat/img/backgroud_bang2.png" id="1_7o5ie"]
+[ext_resource type="Script" path="res://VanThinh/MenuHp_Mp_NhanVat/menu_hp_mp.gd" id="1_25w6v"]
+[ext_resource type="Texture2D" uid="uid://yhxyjxvjbldo" path="res://VanThinh/MenuHp_Mp_NhanVat/img/heart_full.png" id="2_jju80"]
+[ext_resource type="Texture2D" uid="uid://dgxtd5st0jyjc" path="res://VanThinh/MenuHp_Mp_NhanVat/img/mana.png" id="3_j1y5h"]
+[ext_resource type="Texture2D" uid="uid://cg4n7wc3raeot" path="res://VanThinh/MenuHp_Mp_NhanVat/img/phongThu.png" id="4_oirtw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w30tv"]
+bg_color = Color(0.282353, 0.121569, 0.0117647, 0.439216)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmiol"]
+bg_color = Color(0.909804, 0.247059, 0.184314, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3tsh"]
+bg_color = Color(0.270588, 0.596078, 0.913725, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmw5n"]
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="MenuHp_MP" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 21.0
+offset_right = -989.0
+offset_bottom = -539.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_25w6v")
+
+[node name="BackgroudBang" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(103.646, 64.176)
+scale = Vector2(0.379087, 0.380421)
+texture = ExtResource("1_7o5ie")
+
+[node name="hp" type="ProgressBar" parent="BackgroudBang"]
+offset_left = -164.635
+offset_top = -103.831
+offset_right = 225.365
+offset_bottom = -43.831
+theme_override_styles/background = SubResource("StyleBoxFlat_w30tv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fmiol")
+max_value = 200.0
+step = 1.0
+value = 80.0
+show_percentage = false
+
+[node name="ChiSoHP" type="Label" parent="BackgroudBang/hp"]
+layout_mode = 0
+offset_left = 50.257
+offset_top = -3.084
+offset_right = 337.257
+offset_bottom = 54.916
+theme_override_font_sizes/font_size = 40
+text = "80/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="iconhp" type="Sprite2D" parent="BackgroudBang/hp"]
+texture_filter = 1
+position = Vector2(-32.926, 31.282)
+scale = Vector2(7.618, 6.765)
+texture = ExtResource("2_jju80")
+
+[node name="mana" type="ProgressBar" parent="BackgroudBang"]
+offset_left = -162.555
+offset_top = -29.372
+offset_right = 227.445
+offset_bottom = 30.628
+theme_override_styles/background = SubResource("StyleBoxFlat_w30tv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_t3tsh")
+max_value = 500.0
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="ChiSoMP" type="Label" parent="BackgroudBang/mana"]
+layout_mode = 0
+offset_left = 50.257
+offset_top = -3.084
+offset_right = 337.257
+offset_bottom = 54.916
+theme_override_font_sizes/font_size = 40
+text = "100/500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="iconMP" type="Sprite2D" parent="BackgroudBang/mana"]
+texture_filter = 1
+position = Vector2(-36.96, 19.826)
+scale = Vector2(7.662, 6.804)
+texture = ExtResource("3_j1y5h")
+
+[node name="phongthu" type="ProgressBar" parent="BackgroudBang"]
+offset_left = -164.635
+offset_top = 43.176
+offset_right = 225.365
+offset_bottom = 103.176
+theme_override_styles/background = SubResource("StyleBoxFlat_w30tv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qmw5n")
+max_value = 120.0
+step = 1.0
+value = 120.0
+show_percentage = false
+
+[node name="ChiSoPhongThu" type="Label" parent="BackgroudBang/phongthu"]
+layout_mode = 0
+offset_left = 50.257
+offset_top = -3.084
+offset_right = 337.257
+offset_bottom = 54.916
+theme_override_font_sizes/font_size = 40
+text = "80/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="iconPhongThu" type="Sprite2D" parent="BackgroudBang/phongthu"]
+texture_filter = 1
+position = Vector2(-33.536, 30.327)
+scale = Vector2(0.887, 0.976)
+texture = ExtResource("4_oirtw")

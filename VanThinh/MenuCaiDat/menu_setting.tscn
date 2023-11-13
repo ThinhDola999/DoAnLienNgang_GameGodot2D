@@ -1,0 +1,138 @@
+[gd_scene load_steps=11 format=3 uid="uid://ds0cmc38yk2uq"]
+
+[ext_resource type="Script" path="res://VanThinh/MenuCaiDat/menuSetting.gd" id="1_ap8l7"]
+[ext_resource type="Texture2D" uid="uid://b57jxnci7ibls" path="res://VanThinh/MenuCaiDat/img/background_menusetting.png" id="1_l4k8d"]
+[ext_resource type="Texture2D" uid="uid://ywomwysiqmq7" path="res://VanThinh/MenuCaiDat/img/closeButton.png" id="2_yd0xh"]
+[ext_resource type="Texture2D" uid="uid://dbp5h8u31t51h" path="res://VanThinh/MenuCaiDat/img/thietlap.png" id="3_x6ifr"]
+[ext_resource type="PackedScene" uid="uid://c0iyec74t73qt" path="res://VanThinh/MenuCaiDat/volume_slider.tscn" id="6_oiyxr"]
+[ext_resource type="Texture2D" uid="uid://dc6jfw11qokog" path="res://VanThinh/MenuCaiDat/img/iconItemAmLuong.png" id="6_sxf55"]
+[ext_resource type="Texture2D" uid="uid://buvofg5gkhxgi" path="res://VanThinh/MenuCaiDat/img/iconItemLoa.png" id="7_0lu43"]
+[ext_resource type="Texture2D" uid="uid://c4ghnumpw8k56" path="res://VanThinh/MenuCaiDat/img/iconItemNhac.png" id="8_w4la2"]
+[ext_resource type="AudioStream" uid="uid://df4k246phh7sv" path="res://VanThinh/MenuCaiDat/AmThanh/Deep In The Forest.mp3" id="10_j3i5b"]
+[ext_resource type="AudioStream" uid="uid://dr0mf0646dlbp" path="res://VanThinh/MenuCaiDat/AmThanh/button-124476.mp3" id="11_i5ysw"]
+
+[node name="menuSetting" type="Node2D"]
+script = ExtResource("1_ap8l7")
+
+[node name="BackgroundMenusetting" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(607, 334)
+scale = Vector2(1.13372, 1.04118)
+texture = ExtResource("1_l4k8d")
+
+[node name="Thietlap" type="Sprite2D" parent="BackgroundMenusetting"]
+texture_filter = 1
+position = Vector2(12.3488, -249.718)
+scale = Vector2(0.567481, 0.650885)
+texture = ExtResource("3_x6ifr")
+
+[node name="buttonClose" type="Button" parent="BackgroundMenusetting"]
+offset_left = 365.0
+offset_top = -239.0
+offset_right = 412.0
+offset_bottom = -191.0
+
+[node name="CloseButton" type="Sprite2D" parent="BackgroundMenusetting/buttonClose"]
+texture_filter = 1
+position = Vector2(23.1026, 25.7796)
+scale = Vector2(0.461606, 0.467247)
+texture = ExtResource("2_yd0xh")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BackgroundMenusetting"]
+offset_left = -416.0
+offset_top = -173.0
+offset_right = 414.0
+offset_bottom = 234.0
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundMenusetting/ScrollContainer"]
+custom_minimum_size = Vector2(0, 410)
+layout_mode = 2
+
+[node name="amThanh" type="Control" parent="BackgroundMenusetting/ScrollContainer/ColorRect"]
+anchors_preset = 0
+offset_right = 826.0
+offset_bottom = 414.0
+
+[node name="IconItemLoa" type="Sprite2D" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh"]
+texture_filter = 1
+position = Vector2(111.692, 110.571)
+scale = Vector2(0.356213, 0.376393)
+texture = ExtResource("7_0lu43")
+
+[node name="Label" type="Label" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh/IconItemLoa"]
+offset_left = -138.667
+offset_top = 89.3103
+offset_right = 179.333
+offset_bottom = 147.31
+theme_override_font_sizes/font_size = 40
+text = "Âm Lượng Chính
+"
+
+[node name="IconItemNhac" type="Sprite2D" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh"]
+texture_filter = 1
+position = Vector2(107.282, 221.983)
+scale = Vector2(0.413024, 0.361729)
+texture = ExtResource("8_w4la2")
+
+[node name="Label" type="Label" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh/IconItemNhac"]
+offset_left = -163.373
+offset_top = 90.2758
+offset_right = 154.627
+offset_bottom = 206.276
+theme_override_font_sizes/font_size = 40
+text = "Nhạc
+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IconItemAmLuong" type="Sprite2D" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh"]
+texture_filter = 1
+position = Vector2(100.226, 333.395)
+scale = Vector2(0.419856, 0.392297)
+texture = ExtResource("6_sxf55")
+
+[node name="Label" type="Label" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh/IconItemAmLuong"]
+offset_left = -162.29
+offset_top = 93.0344
+offset_right = 155.71
+offset_bottom = 209.034
+theme_override_font_sizes/font_size = 40
+text = "Sfx
+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="music" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh" instance=ExtResource("6_oiyxr")]
+layout_mode = 0
+offset_left = 200.779
+offset_top = 208.537
+offset_right = 778.779
+offset_bottom = 242.537
+bus_name = "music"
+
+[node name="master" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh" instance=ExtResource("6_oiyxr")]
+layout_mode = 0
+offset_left = 200.779
+offset_top = 104.808
+offset_right = 778.779
+offset_bottom = 138.808
+bus_name = "Master"
+
+[node name="sfx" parent="BackgroundMenusetting/ScrollContainer/ColorRect/amThanh" instance=ExtResource("6_oiyxr")]
+layout_mode = 0
+offset_left = 200.779
+offset_top = 321.87
+offset_right = 778.779
+offset_bottom = 355.87
+bus_name = "sfx"
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_j3i5b")
+autoplay = true
+
+[node name="sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_i5ysw")
+
+[connection signal="pressed" from="BackgroundMenusetting/buttonClose" to="." method="_on_button_close_pressed"]

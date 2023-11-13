@@ -1,0 +1,224 @@
+[gd_scene load_steps=17 format=3 uid="uid://dvxb7p2ov8ynf"]
+
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/enemy.gd" id="1_3jfwu"]
+[ext_resource type="Texture2D" uid="uid://cuvxstqym24q6" path="res://Assets/Sprites/Enemies/enemy_worm.png" id="2_ml7su"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StatisticsComponent.gd" id="2_pxf4k"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy components/DetectPlayer.gd" id="3_bdyra"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AnimationController.gd" id="5_hasjx"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/HitComponent.gd" id="6_1g02o"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/AttackComponent.gd" id="7_tkxoc"]
+[ext_resource type="Script" path="res://Scripts/Components/Enemy_player components/StateController.gd" id="8_5d8no"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vljgb"]
+size = Vector2(7, 7)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6deel"]
+radius = 125.004
+
+[sub_resource type="Animation" id="Animation_nnx4l"]
+resource_name = "Idle"
+length = 0.9
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HitComponent/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -0.25)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HitComponent/CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(7, 19)]
+}
+
+[sub_resource type="Animation" id="Animation_gh76t"]
+resource_name = "Moving"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [8, 10, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HitComponent/CollisionShape2D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19, 9)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HitComponent/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 4.75)]
+}
+
+[sub_resource type="Animation" id="Animation_i6tp7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../HitComponent/CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 6.25)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HitComponent/CollisionShape2D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(23, 6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_25dki"]
+_data = {
+"Idle": SubResource("Animation_nnx4l"),
+"Moving": SubResource("Animation_gh76t"),
+"RESET": SubResource("Animation_i6tp7")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2csaw"]
+size = Vector2(23, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npolc"]
+size = Vector2(19, 8)
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("statistics", "detect_area", "attack", "navAgent", "state", "timer")]
+collision_layer = 64
+collision_mask = 97
+script = ExtResource("1_3jfwu")
+statistics = NodePath("StatisticsComponent")
+detect_area = NodePath("DetectArea")
+attack = NodePath("AttackComponent")
+navAgent = NodePath("NavigationAgent2D")
+state = NodePath("StateController")
+timer = NodePath("TimerAttack")
+
+[node name="StatisticsComponent" type="Node2D" parent="."]
+script = ExtResource("2_pxf4k")
+health = 50
+speed = 200
+
+[node name="BlockCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 11.5)
+shape = SubResource("RectangleShape2D_vljgb")
+
+[node name="DetectArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("3_bdyra")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+position = Vector2(0, 12)
+shape = SubResource("CircleShape2D_6deel")
+
+[node name="AnimationController" type="Sprite2D" parent="." node_paths=PackedStringArray("detectArea", "animator", "state")]
+texture_filter = 1
+texture = ExtResource("2_ml7su")
+hframes = 8
+vframes = 2
+script = ExtResource("5_hasjx")
+detectArea = NodePath("../DetectArea")
+animator = NodePath("AnimationPlayer")
+state = NodePath("../StateController")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationController"]
+libraries = {
+"": SubResource("AnimationLibrary_25dki")
+}
+
+[node name="HitComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "detect_area", "sprite")]
+visible = false
+position = Vector2(-0.5, 5.75)
+collision_layer = 64
+collision_mask = 33
+script = ExtResource("6_1g02o")
+health_component = NodePath("../StatisticsComponent")
+detect_area = NodePath("../DetectArea/CollisionShape2D")
+sprite = NodePath("../AnimationController")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitComponent"]
+position = Vector2(0, 6.25)
+shape = SubResource("RectangleShape2D_2csaw")
+
+[node name="AttackComponent" type="Area2D" parent="." node_paths=PackedStringArray("statistics")]
+collision_layer = 64
+script = ExtResource("7_tkxoc")
+statistics = NodePath("../StatisticsComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackComponent"]
+visible = false
+position = Vector2(-0.5, 11)
+shape = SubResource("RectangleShape2D_npolc")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 22.37
+
+[node name="StateController" type="Node2D" parent="."]
+script = ExtResource("8_5d8no")
+
+[node name="TimerAttack" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerState" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="area_entered" from="DetectArea" to="DetectArea" method="_on_area_entered"]
+[connection signal="body_entered" from="DetectArea" to="DetectArea" method="_on_body_entered"]
+[connection signal="body_exited" from="DetectArea" to="DetectArea" method="_on_body_exited"]
+[connection signal="area_entered" from="AttackComponent" to="AttackComponent" method="_on_area_entered"]
